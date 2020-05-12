@@ -1,1 +1,10 @@
 # plover-dictionary-converter
+
+Dependencies:
+- Python >=3.5
+- Plover >=4.0.0
+
+Plover must be on the `PYTHONPATH` for this script to function properly.
+
+If you have Nixpkgs, just run `nix-shell` to get an environment where this is
+set up for you.

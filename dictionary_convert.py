@@ -1,39 +1,44 @@
 """
-Usage: python3 dictionary_convert.py [SOURCE_DICTIONARY] [OUTPUT_JSON]
+Usage: python3 dictionary_convert.py [INPUT_DICTIONARY] [OUTPUT_JSON]
 """
-import sys
 
-import json
 from pathlib import Path
+import argparse
+import json
+import logging
+import sys
 
 from plover import system
 from plover.registry import registry
 from plover.dictionary.base import create_dictionary, load_dictionary
 
-import logging
+_LOG = logging.getLogger(__file__)
 
-logging.basicConfig(level=logging.DEBUG)
+try:
+    from plover_digitalcat_dictionary import DigitalCATDictionary
 
-from plover_digitalcat_dictionary import DigitalCATDictionary
+    registry.register_plugin("dictionary", "dct", DigitalCATDictionary)
+except ImportError:
+    _LOG.warning("Could not load DigitalCATDictionary support")
 
-registry.register_plugin("dictionary", "dct", DigitalCATDictionary)
 
-registry.update()
-system.setup("English Stenotype")
+if __name__ == "__main__":
+    # Required to load dictionary support in general
+    registry.update()
+    system.setup("English Stenotype")
 
-input = sys.argv[1]
-output = sys.argv[2]
+    ap = argparse.ArgumentParser()
+    ap.add_argument("input_dictionary", help="Path to the input dictionary", type=Path)
+    ap.add_argument("output_json", help="Path to the output JSON file", type=Path)
+    opts = ap.parse_args()
 
-id = load_dictionary(input)
+    id = load_dictionary(str(opts.input_dictionary))
 
-Path(output).write_text(
-    json.dumps(
-        {"/".join(k): v.strip() for k, v in id._contents.items()},
-        indent=0,
-        sort_keys=True,
+    # dump from the input dictionary directly
+    opts.output_json.write_text(
+        json.dumps(
+            {"/".join(k): v.strip() for k, v in id._dict.items()},
+            indent=0,
+            sort_keys=True,
+        )
     )
-)
-
-# od = create_dictionary(output)
-# od.update(id)
-# od.save()

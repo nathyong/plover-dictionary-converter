@@ -2,7 +2,6 @@
 Usage: python3 dictionary_convert.py [INPUT_DICTIONARY] [OUTPUT_JSON]
 """
 
-from pathlib import Path
 import argparse
 import json
 import logging
@@ -29,12 +28,12 @@ if __name__ == "__main__":
     system.setup("English Stenotype")
 
     ap = argparse.ArgumentParser()
-    ap.add_argument("input_dictionary", help="Path to the input dictionary", type=Path)
-    ap.add_argument("output_json", help="Path to the output JSON file", type=Path)
+    ap.add_argument("input_dictionary", help="Path to the input dictionary")
+    ap.add_argument("output_json", help="Path to the output JSON file")
     opts = ap.parse_args()
 
-    id = load_dictionary(str(opts.input_dictionary))
+    id = load_dictionary(opts.input_dictionary)
 
-    od = create_dictionary(str(opts.output_json))
+    od = create_dictionary(opts.output_json)
     od.update(id)
     od.save()

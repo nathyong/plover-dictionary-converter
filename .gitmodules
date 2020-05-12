@@ -1,0 +1,3 @@
+[submodule "plover_digitalcat_dictionary"]
+	path = plover_digitalcat_dictionary
+	url = https://github.com/nathyong/plover_digitalcat_dictionary

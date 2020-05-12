@@ -15,6 +15,7 @@ from plover.dictionary.base import create_dictionary, load_dictionary
 _LOG = logging.getLogger(__file__)
 
 try:
+    sys.path.append("./plover_digitalcat_dictionary/")
     from plover_digitalcat_dictionary import DigitalCATDictionary
 
     registry.register_plugin("dictionary", "dct", DigitalCATDictionary)
@@ -34,11 +35,6 @@ if __name__ == "__main__":
 
     id = load_dictionary(str(opts.input_dictionary))
 
-    # dump from the input dictionary directly
-    opts.output_json.write_text(
-        json.dumps(
-            {"/".join(k): v.strip() for k, v in id._dict.items()},
-            indent=0,
-            sort_keys=True,
-        )
-    )
+    od = create_dictionary(str(opts.output_json))
+    od.update(id)
+    od.save()

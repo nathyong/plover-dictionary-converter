@@ -1,6 +1,13 @@
 # plover-dictionary-converter
 
-Dependencies:
+## Usage
+
+```sh
+python3 ./dictionary_convert.py /path/to/input.dictionary /path/to/output.json
+```
+
+## Dependencies
+
 - Python >=3.5
 - Plover >=4.0.0
 
@@ -8,3 +15,8 @@ Plover must be on the `PYTHONPATH` for this script to function properly.
 
 If you have Nixpkgs, just run `nix-shell` to get an environment where this is
 set up for you.
+
+## Notes
+
+A copy of the `plover_dictionary_converter` repository is included as a
+submodule, since the upstream version hasn't been updated in a while.
